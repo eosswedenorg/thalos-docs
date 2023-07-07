@@ -23,12 +23,10 @@ export default defineConfig({
         },
         {
             text: "Getting Started",
-            collapsed: true,
             items: [
                 {
                     text: 'Installation',
                     link: '/docs/installation/',
-                    collapsed: true,
                     items: [
                         {
                             text: "Package Managers",
@@ -48,7 +46,6 @@ export default defineConfig({
         },
         {
             text: 'Architecture',
-            collapsed: true,
             items: [
                 { text: 'Overview', link: '/docs/architecture/' },
                 { text: 'Benchmark', link: '/docs/architecture/benchmark' }
@@ -56,7 +53,6 @@ export default defineConfig({
         },
         {
             text: 'API',
-            collapsed: true,
             items: [
                 { text: 'Messages', link: '/docs/api/messages' },
                 { text: 'Channels', link: '/docs/api/redis-channels' },
