@@ -41,7 +41,16 @@ export default defineConfig({
                 },
                 {
                     text: 'Configuration',
-                    link: '/docs/configuration'
+                    link: '/docs/configuration',
+                    items: [
+                        {
+                            text: "Securing redis",
+                            link: '/docs/redis/security/',
+                            items: [
+                                { text: "ACL", link: '/docs/redis/security/acl' },
+                            ]
+                        },
+                    ]
                 }
             ]
         },
