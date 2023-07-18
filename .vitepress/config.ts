@@ -5,6 +5,7 @@ export default defineConfig({
   title: "Thalos",
   description: "A VitePress Site",
   cleanUrls: true,
+  outDir: "dist",
   themeConfig: {
     search: {
         provider: 'local'
