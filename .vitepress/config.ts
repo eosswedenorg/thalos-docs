@@ -6,7 +6,6 @@ export default defineConfig({
   description: "Your Antilope SHIP Provider",
   cleanUrls: true,
   outDir: "dist",
-  base: "/thalos-docs",
   themeConfig: {
     logo: "/logo-small.svg",
     search: {
