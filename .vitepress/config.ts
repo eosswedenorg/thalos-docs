@@ -3,7 +3,7 @@ import { defineConfig } from 'vitepress'
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
   title: "Thalos",
-  description: "A VitePress Site",
+  description: "Your Antilope SHIP Provider",
   cleanUrls: true,
   outDir: "dist",
   themeConfig: {
