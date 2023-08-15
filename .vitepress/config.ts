@@ -7,6 +7,7 @@ export default defineConfig({
   cleanUrls: true,
   outDir: "dist",
   themeConfig: {
+    logo: "/logo-small.svg",
     search: {
         provider: 'local'
     },
