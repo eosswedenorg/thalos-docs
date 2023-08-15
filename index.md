@@ -4,6 +4,7 @@ layout: home
 
 hero:
   name: "Thalos"
+  image: /logo.svg
   #text: ""
   tagline: An application that makes it easy for users to stream blockchain data from an Antelope SHIP node.
   actions:
