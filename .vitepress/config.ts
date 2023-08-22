@@ -65,6 +65,7 @@ export default defineConfig({
         {
             text: 'API',
             items: [
+                { text: 'Examples', link: '/docs/api/examples' },
                 { text: 'Messages', link: '/docs/api/messages' },
                 { text: 'Channels', link: '/docs/api/redis-channels' },
                 { text: 'Clients', link: '/docs/api/clients' }
