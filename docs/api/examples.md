@@ -65,6 +65,55 @@ func main() {
 
 ```
 
+## Nodejs
+
+install the thalos client library:
+
+`npm install -D thalos-nodejs`
+
+::: code-group
+
+```ts [TypeScript]
+import * as thalos from 'thalos-nodejs';
+
+// Create client.
+const client = thalos.createRedisClient({
+    // url: "redis://localhost:6379",
+    // prefix: "ship",
+    ns: "1064487b3cd1a897ce03ae5b6a865651747e2e152090f99c1d19d44e01aea5a4" // wax mainnet
+})
+
+client.onAction({contract: "atomicassets", name: "logtransfer"}, (action:thalos.ActionTrace) => {
+    console.log("Transfer", "From/To:", action.data['from'], "->", action.data['to'], "Assets:", action.data['asset_ids'], action.data['memo']);
+});
+
+```
+
+```js [JavaScript]
+
+const thalos = require('thalos-nodejs');
+
+// Create client.
+const client = thalos.createRedisClient({
+    // url: "redis://localhost:6379",
+    // prefix: "ship",
+    ns: "1064487b3cd1a897ce03ae5b6a865651747e2e152090f99c1d19d44e01aea5a4" // wax mainnet
+})
+
+client.onAction({contract: "atomicassets", name: "logtransfer"}, action => {
+    console.log("Transfer", "From/To:", action.data['from'], "->", action.data['to'], "Assets:", action.data['asset_ids'], action.data['memo']);
+});
+
+```
+:::
+
+```
+Transfer From/To: dtknw.c.wam -> farmersworld Assets: [ '1099900831604' ] feed_animal:1099885261718
+Transfer From/To: atomicmarket -> xk5qu.wam Assets: [ '1099519946844' ] AtomicMarket Cancelled Auction - ID # 1238572
+Transfer From/To: xk5qu.wam -> atomicmarket Assets: [ '1099519946844' ] auction
+Transfer From/To: ponyslaystat -> wombatmaster Assets: [ '1099880264627' ]
+```
+
 ## Python
 
 This example will listen for new atomicasset transfers and print them to standard output.
