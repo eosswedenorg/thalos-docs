@@ -51,3 +51,4 @@ After building the binary you can install it along with basic config file and st
 
 ```shell
 ./install.sh /path/to/your/directory/of/choice
+```
