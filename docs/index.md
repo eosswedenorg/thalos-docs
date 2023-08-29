@@ -7,5 +7,8 @@ It handles all the technical stuff for you:
  * Decoding of antelope's binary format.
  * Websocket connection (with reconnection)
  * Decoding of action data according to contract ABI
+ * Message routing, Only get the data you actually care about.
 
-And then sends the data over redis in plain json (or other popular formats if you want!)
+Thalos utilizes [Redis](https://redis.io) as its messaging platform. This empowers developers with a streamlined and swift approach to receiving messages in real-time.
+
+Se the [examples](/docs/api/examples) page to see how easy this can be done!
