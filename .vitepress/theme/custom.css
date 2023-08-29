@@ -1,10 +1,9 @@
 :root {
   --vp-c-bg: #fcfcfc;
-  --vp-c-brand: #bc544b;
-  --vp-c-brand-light: #ca5d53;
-  --vp-c-brand-lighter: #e7695e;
-  --vp-c-brand-dark: #8d413a;
-  --vp-c-brand-darker: #7e3933;
+  --vp-c-brand-1: #bc544b;
+  --vp-c-brand-2: #e7695e;
+  --vp-c-brand-3: #bc544b;
+  --vp-c-brand-soft: #7e3933;
 }
 
 .dark {
