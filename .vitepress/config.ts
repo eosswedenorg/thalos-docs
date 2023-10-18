@@ -55,6 +55,10 @@ export default defineConfig({
                             ]
                         },
                     ]
+                },
+                {
+                    text: 'Running the server',
+                    link: '/docs/running-the-server',
                 }
             ]
         },

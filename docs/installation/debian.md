@@ -50,19 +50,6 @@ The configuration file is located at `/etc/thalos/config.yml` and contains an ex
 
 See [Configuration](/docs/configuration) for more information
 
-## 3. Starting the Server via systemd
+## 3. Starting the Server
 
-```shell
-sudo systemctl enable thalos-server
-sudo systemctl start thalos-server
-```
-
-After executing these commands, the server should be up and running. You can check the logs at `/var/log/thalos.log` (unless specified otherwise in the configuration), or by running `sudo systemctl status thalos-server`.
-
-### Starting Manually
-
-If desired, Thalos can also be started manually for quick configuration testing or in cases where running systemd is not preferable:
-
-```shell
-/usr/bin/thalos-server --config /etc/thalos/thalos.yml
-```
+There are serveral ways to run the server. the most common on debian is via [systemd](/docs/running-the-server#with-systemd) or [manually](/docs/running-the-server#with-systemd)
