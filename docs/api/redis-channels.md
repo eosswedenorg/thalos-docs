@@ -36,3 +36,9 @@ Channel where only actions on a specific `<contract>` is posted:
 Channel where only `<action>` on a specific `<contract>` is posted:
 
 `<namespace>::actions/contract/<contract>/name/<action>`
+
+## Rollback
+
+Rollback mesages are posted to this channel.
+
+`<namespace>::rollback`
