@@ -60,3 +60,10 @@ Heartbeat messages are posted to the heartbeat channel periodically.
 | -------- | -------- | ------------ |
 | account  | string   | Account name |
 | sequence | int      | Sequence     |
+
+### RollbackMessage
+
+| Field     | Datatype | Description                          |
+| --------- | -------- | ------------------------------------ |
+| new_block | int      | The current block number             |
+| old_block | int      | Last block number that was received. |
