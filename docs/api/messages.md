@@ -60,3 +60,28 @@ Heartbeat messages are posted to the heartbeat channel periodically.
 | -------- | -------- | ------------ |
 | account  | string   | Account name |
 | sequence | int      | Sequence     |
+
+### RollbackMessage
+
+| Field     | Datatype | Description                          |
+| --------- | -------- | ------------------------------------ |
+| new_block | int      | The current block number             |
+| old_block | int      | Last block number that was received. |
+
+### TableDelta
+
+| Field          | Datatype        | Description       |
+| -------------- | --------------- | ----------------- |
+| blocknum       | int             | Block number      |
+| blocktimestamp | time            | Block timestamp   |
+| name           | string          | Table name        |
+| rows           | TableDeltaRow[] | Rows in the delta |
+
+
+### TableDeltaRow
+
+| Field    | Datatype      | Description                       |
+| -------- | ------------- | --------------------------------- |
+| present  | bool          | -                                 |
+| data     | any           | Decoded data                      |
+| raw_data | base64_string | Raw data in base64 encoded string |
