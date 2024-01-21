@@ -42,3 +42,24 @@ Channel where only `<action>` on a specific `<contract>` is posted:
 Rollback mesages are posted to this channel.
 
 `<namespace>::rollback`
+
+## Table delta
+
+Table deltas are posted to the following channels
+
+All deltas:
+
+`<namespace>::tabledeltas`
+
+Only deltas for a specific type.
+
+`<namespace>::tabledeltas/name/<name>`
+
+`<name>` can be one of
+
+* `account_metadata`
+* `contract_table`
+* `contract_row`
+* `contract_index64`
+* `resource_usage`
+* `resource_limits_state`
