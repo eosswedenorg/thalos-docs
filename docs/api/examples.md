@@ -14,7 +14,6 @@ import (
 	"github.com/eosswedenorg/thalos/api/message"
 	_ "github.com/eosswedenorg/thalos/api/message/json"
 	api_redis "github.com/eosswedenorg/thalos/api/redis"
-
 	"github.com/redis/go-redis/v9"
 )
 
@@ -27,6 +26,7 @@ func main() {
 		ChainID: "1064487b3cd1a897ce03ae5b6a865651747e2e152090f99c1d19d44e01aea5a4", // Wax mainnet.
 	})
 
+    // Create client
 	codec, err := message.GetCodec("json")
 	if err != nil {
 		fmt.Println("Failed to get json codec")
@@ -35,34 +35,47 @@ func main() {
 
 	client := api.NewClient(sub, codec.Decoder)
 
-	client.OnAction = func(act message.ActionTrace) {
-		fmt.Println("ActionTrace")
-		fmt.Println(act)
-		fmt.Println("---")
+    // Subscribe to some channels.
+	err = client.Subscribe(
+		api.TransactionChannel,
+		api.ActionChannel{Contract: "eosio"}.Channel(),
+		api.ActionChannel{Name: "mine"}.Channel(),
+		api.HeartbeatChannel,
+		api.TableDeltaChannel{}.Channel(),
+	)
+
+	if err != nil {
+		fmt.Println(err)
+		return
 	}
 
-	client.OnHeartbeat = func(hb message.HeartBeat) {
-		fmt.Println("HeartBeat -- block:", hb.BlockNum, "head:", hb.HeadBlockNum, "lib:", hb.LastIrreversibleBlockNum)
-	}
-
-	// Subscribe to some stuffs.
-	client.Subscribe(api.ActionChannel{Contract: "eosio"}.Channel())
-	client.Subscribe(api.ActionChannel{Name: "mine"}.Channel())
-	client.Subscribe(api.HeartbeatChannel)
-
+    // Wait for interrupt in a go routine and close the client.
 	go func() {
-		sig := make(chan os.Signal, 1)
+		sig := make(chan os.Signal)
 		signal.Notify(sig, os.Interrupt)
 
 		<-sig
 		fmt.Println("Got interrupt")
+
 		client.Close()
 	}()
 
-	// Read stuff.
-	client.Run()
+    // Read messages
+	for t := range client.Channel() {
+		switch msg := t.(type) {
+		case error:
+			fmt.Println("Error:", msg)
+		case message.TransactionTrace:
+			fmt.Println("Transaction", msg.BlockNum, msg.ID)
+			fmt.Println(msg)
+			fmt.Println("---")
+		case message.HeartBeat :
+			fmt.Println("Heartbeat")
+			fmt.Println(msg)
+			fmt.Println("---")
+		}
+	}
 }
-
 ```
 
 ## Nodejs
