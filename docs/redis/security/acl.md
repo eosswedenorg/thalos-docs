@@ -50,19 +50,22 @@ aclfile /etc/redis/users.acl
 
 There is also a tool to create the config lines for you.
 
-```sh
+```
 $ thalos-tools redis-acl
+Passwords
+default: NgCseRB8QcxdHwcwmg43OOjxZW0YbngN
+thalos: kmJIi1kP5bp2MHQeSj925otWnxTvfRe5
+thalos-client: WBGP9mXuUIIv11KhLgbuaTcl1NnRmhWn
 
-# Created by thalos-tools on Thu Jul 13 08:06:37 CEST 2023
-user default off
-user admin on <e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 ~* &* +@all
-user thalos on <e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 resetchannels &ship::* ~thalos::* +@connection +@read +@write +publish
-user thalos-client on <e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 resetchannels &ship::* +@connection +subscribe
+# Created by thalos-tools on Mon Feb 12 15:56:26 CET 2024
+user default on #3c0745d926021292a521267d803b9c20f3570bee30697e401920151d2593d1e4 ~* &* +@all
+user thalos on #cf2b3e36521b0e67cb50fcc1f931f577384bb84ad7d0492d00e07beb4660ff1d resetchannels ~ship::* &ship::* -@all +get +publish +set
+user thalos-client on #06d88f1e91d8bc82a5074223fd380006395b80a7b41dcd1318be1dd288282e4a resetchannels &ship::* -@all +subscribe
 ```
 
 ## Test the accounts permissions
 
-It is a good idea to test if the configurationg works.
+It is a good idea to test if the configuration works.
 
 ```sh
 $ redis-cli --pass mypassword
@@ -76,7 +79,6 @@ Reading messages... (press Ctrl-C to quit)
 1) "subscribe"
 2) "ship::1234"
 3) (integer) 1
-
 ```
 
 ## Thalos config
