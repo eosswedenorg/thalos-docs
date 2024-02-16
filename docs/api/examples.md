@@ -82,7 +82,7 @@ func main() {
 
 install the thalos client library:
 
-`npm install -D thalos-nodejs`
+`npm install --save @eosswedenorg/thalos-client`
 
 ::: code-group
 
