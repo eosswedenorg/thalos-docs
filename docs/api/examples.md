@@ -171,3 +171,22 @@ Transfer From/To: fzzm..c.wam -> lstm4.c.wam Assets: ['1099535666180', '10995144
 Transfer From/To: 2ahmc.c.wam -> mmklu.c.wam Assets: ['1099538558402', '1099514074361', '1099514699356']
 Transfer From/To: atomicmarket -> xk5qu.wam Assets: ['1099541038508'] AtomicMarket Cancelled Auction - ID # 1238125
 ```
+
+## Bash
+
+You will need to have `redis-cli` and `jq` installed.
+
+```bash
+#!/bin/bash
+
+CHANNEL=ship::1064487b3cd1a897ce03ae5b6a865651747e2e152090f99c1d19d44e01aea5a4::actions/contract/atomicassets/name/logtransfer
+
+stdbuf -oL redis-cli --raw SUBSCRIBE ${CHANNEL} | while read RCMD; do
+    read CH
+    read MSG
+
+	if [ $RCMD == message ]; then
+		echo "Transfer From/To:" $(echo $MSG | jq -r ".data.from, \"->\", .data.to, \"Assets:\", .data.asset_ids, .data.memo")
+	fi
+done
+```
