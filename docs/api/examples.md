@@ -87,7 +87,7 @@ install the thalos client library:
 ::: code-group
 
 ```ts [TypeScript]
-import * as thalos from 'thalos-nodejs';
+import * as thalos from '@eosswedenorg/thalos-client';
 
 // Create client.
 const client = thalos.createRedisClient({
@@ -104,7 +104,7 @@ client.onAction({contract: "atomicassets", name: "logtransfer"}, (action:thalos.
 
 ```js [JavaScript]
 
-const thalos = require('thalos-nodejs');
+const thalos = require('@eosswedenorg/thalos-client');
 
 // Create client.
 const client = thalos.createRedisClient({
