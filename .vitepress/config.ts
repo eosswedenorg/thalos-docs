@@ -85,7 +85,7 @@ export default defineConfig({
     ],
     footer: {
         message: 'Released under the MIT License.',
-        copyright: 'Copyright © 2023 Sw/eden'
+        copyright: 'Copyright © 2023-2024 Sw/eden'
     }
   },
 
