@@ -30,6 +30,7 @@ Heartbeat messages are posted to the heartbeat channel periodically.
 | blocktimestamp | time              | Block timestamp                                                   |
 | receipt        | ActionReceipt     | Action receipt                                                    |
 | receiver       | string            | Receiver account                                                  |
+| first_receiver | bool              | True if receiver is the first account to get notified             |
 | contract       | string            | Contract account                                                  |
 | action         | string            | What action was executed on the contract                          |
 | data           | any               | Contract specific data (decoded using the contracts abi)          |
