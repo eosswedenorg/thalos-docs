@@ -48,6 +48,10 @@ export default defineConfig({
                     text: 'Configuration',
                     link: '/docs/configuration',
                     items: [
+						{
+                            text: "Datatypes",
+                            link: '/docs/configuration#datatypes'
+                        },
                         {
                             text: "Securing redis",
                             link: '/docs/redis/security/',
@@ -93,5 +97,4 @@ export default defineConfig({
   markdown: {
     lineNumbers: true
   }
-
 })
