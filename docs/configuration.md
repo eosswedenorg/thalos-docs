@@ -107,7 +107,7 @@ Go uses a different approach then other languages. usually you can format a date
 | ------------ | ------------------------------------------- | ---------------- |
 | **Date**     | -                                           | -                |
 | `2006`       | Full year                                   | 2018,1989        |
-| `06`         | 2-digit                                     | 18, 89           |
+| `06`         | 2-digit year                                | 18, 89           |
 | `Jan`        | Three letter word of month                  | Oct, Jun         |
 | `January`    | Full name of month                          | April, September |
 | `2`          | Day in month without leading zero           | 1 to 31          |
