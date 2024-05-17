@@ -41,6 +41,7 @@ export default defineConfig({
                         },
                         { text: "Bundled binaries", link: '/docs/installation/#bundled-binaries' },
                         { text: "Compiling from source", link: '/docs/installation/#compiling-from-source' },
+					    { text: "Docker", link: '/docs/installation/docker' },
                     ]
                 },
                 {
