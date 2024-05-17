@@ -32,8 +32,8 @@ to run
 
 `ship.irreversible_only` (`boolean`)
 
-If true, the ship node will only send transactions once they are considered irreversible. 
-If false the transactions are posted as soon as possible.
+If `true`, the ship node will only send transactions once they are considered irreversible.
+If `false` the transactions are posted as soon as possible.
 
 `ship.start_block_num` (`integer`)
 
@@ -85,6 +85,14 @@ If they are defined, thalos will send messages when important events happen.
 `string`
 
 A sequence of characters.
+
+`integer`
+
+A valid integer.
+
+`boolean`
+
+Boolean value (`true` or `false`)
 
 `dateformat`
 
