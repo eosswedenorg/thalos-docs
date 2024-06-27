@@ -43,6 +43,10 @@ Thalos will start streaming blocks starting from this one. if undefined, the cur
 
 Thalos will stop streaming when the block number defined by this value will be reached. if undefined thalos will never stop.
 
+`ship.blacklist` ([`ContractList`](#contractlist))
+
+List of contract,actions pairs that Thalos will not process if encountered.
+
 ### Redis
 
 `redis.addr` ([`string`](#string)) - Address (and port) to redis server
@@ -136,3 +140,23 @@ A duration string is a possibly signed sequence of decimal numbers, each with op
 
 Valid time units are `"ns"`, `"us"` (or `"µs"`), `"ms"`, `"s"`, `"m"`, `"h"`.
 
+### ContractList
+
+A array of contract and actions pairs.
+
+Keys (contracts) are of type [`string`](#string) and values are an array of [`string`](#string) (one or more actions).
+
+Action array can hold a special string `*` that matches any action.
+
+**example**:
+
+```yaml
+mycontract: [ action1, action2 ]
+# or
+mycontract:
+  - action1
+  - action2
+
+# To target all actions on a contract:
+mycontract: [ "*" ]
+```
