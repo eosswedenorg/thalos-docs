@@ -12,62 +12,62 @@ ship:
 
 ### General
 
-`name` (`string`) - Name of the talos node.
+`name` ([`string`](#string)) - Name of the talos node.
 
-`api` (`string`) - Nodeos API Endpoint.
+`api` ([`string`](#string)) - Nodeos API Endpoint.
 
-`message_codec` (`string`) default: `json`
+`message_codec` ([`string`](#string)) default: `json`
 
 What codec thalos should use when pushing out messages to redis.
 
 ### Ship
 
-`ship.url` (`string`) - Url to the nodeos node.
+`ship.url` ([`string`](#string)) - Url to the nodeos node.
 
-`ship.chain` (`string`)
+`ship.chain` ([`string`](#string))
 
 name of the chain, if not defined thalos will use the chain id reported from `api`.
 This value (or chain_id if undefined) is prepended to channel names, to allow for multiple thalos instances
 to run
 
-`ship.irreversible_only` (`boolean`)
+`ship.irreversible_only` ([`boolean`](#boolean))
 
 If `true`, the ship node will only send transactions once they are considered irreversible.
 If `false` the transactions are posted as soon as possible.
 
-`ship.start_block_num` (`integer`)
+`ship.start_block_num` ([`integer`](#integer))
 
 Thalos will start streaming blocks starting from this one. if undefined, the currect block reported by `api` is used.
 
-`ship.end_block_num` (`integer`)
+`ship.end_block_num` ([`integer`](#integer))
 
 Thalos will stop streaming when the block number defined by this value will be reached. if undefined thalos will never stop.
 
 ### Redis
 
-`redis.addr` (`string`) - Address (and port) to redis server
+`redis.addr` ([`string`](#string)) - Address (and port) to redis server
 
-`redis.user` (`string`) - Username to use when authenticating
+`redis.user` ([`string`](#string)) - Username to use when authenticating
 
-`redis.password` (`string`) - Password to use when authenticating
+`redis.password` ([`string`](#string)) - Password to use when authenticating
 
-`redis.db` (`integer`) - Database index to use
+`redis.db` ([`integer`](#integer)) - Database index to use
 
-`redis.prefix` (`string`) - Key prefix, this will be prepended to all channels that thalos is using to avoid name collision
+`redis.prefix` ([`string`](#string)) - Key prefix, this will be prepended to all channels that thalos is using to avoid name collision
 
 ### Logging
 
 This block configures how thalos will log information.
 
-`log.filename` (`string`) - Filename (without extension)
+`log.filename` ([`string`](#string)) - Filename (without extension)
 
-`log.directory` (`string`) - Directory where to store log files.
+`log.directory` ([`string`](#string)) - Directory where to store log files.
 
-`log.timeformat` (`dateformat`) - Format to rename log files when rotating
+`log.timeformat` ([`dateformat`](#dateformat)) - Format to rename log files when rotating
 
-`log.max_filesize` (`integer`) - Rotate when the file reaches this size.
+`log.max_filesize` ([`integer`](#integer)) - Rotate when the file reaches this size.
 
-`log.max_time` (`duration_string`) - Rotate when the file is this old.
+`log.max_time` ([`duration_string`](#duration-string)) - Rotate when the file is this old.
 
 ### Telegram notifications
 
@@ -75,26 +75,26 @@ These settings control the telegram notification mechanism built into thalos.
 if undefined thalos will simple skip this.
 If they are defined, thalos will send messages when important events happen.
 
-`telegram.id` (`string`) - bot id
+`telegram.id` ([`string`](#string)) - bot id
 
-`telegram.channel` (`integer`) - channel id to use.
+`telegram.channel` ([`integer`](#integer)) - channel id to use.
 
 
 ## Datatypes
 
-`string`
+### string
 
 A sequence of characters.
 
-`integer`
+### integer`
 
 A valid integer.
 
-`boolean`
+### boolean
 
 Boolean value (`true` or `false`)
 
-`dateformat`
+### dateformat
 
 The dateformat type is a `string` but describes a date format in go.
 
@@ -130,8 +130,9 @@ Go uses a different approach then other languages. usually you can format a date
 | `MST`        | Named timezone                              | CEST, GMT        |
 
 
-`duration_string`
+### duration_string
 
 A duration string is a possibly signed sequence of decimal numbers, each with optional fraction and a unit suffix, such as `300ms`, `-1.5h` or `2h45m`.
 
 Valid time units are `"ns"`, `"us"` (or `"µs"`), `"ms"`, `"s"`, `"m"`, `"h"`.
+
