@@ -39,3 +39,5 @@ sudo systemctl start thalos-server
 
 After executing these commands, the server should be up and running. You can check the logs at `/var/log/thalos.log` (unless specified otherwise in the configuration), or by running `sudo systemctl status thalos-server`.
 
+> TIP: if you want to modify the arguments passed to thalos-server when starting via systemd, look in the `/etc/sysconfig/thalos-server` file
+
