@@ -90,7 +90,7 @@ If they are defined, thalos will send messages when important events happen.
 
 A sequence of characters.
 
-### integer`
+### integer
 
 A valid integer.
 
