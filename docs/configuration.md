@@ -47,6 +47,10 @@ Thalos will stop streaming when the block number defined by this value will be r
 
 List of contract,actions pairs that Thalos will not process if encountered.
 
+`ship.blacklist_is_whitelist` ([`boolean`](#boolean))
+
+Thalos will treat `ship.blacklist` as a whitelist.
+
 ### Redis
 
 `redis.addr` ([`string`](#string)) - Address (and port) to redis server
