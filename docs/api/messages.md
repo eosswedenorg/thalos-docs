@@ -81,8 +81,27 @@ Heartbeat messages are posted to the heartbeat channel periodically.
 
 ### TableDeltaRow
 
-| Field    | Datatype        | Description                       |
-| -------- | --------------- | --------------------------------- |
-| present  | `bool`          | -                                 |
-| data     | `any`           | Decoded data                      |
-| raw_data | `base64_string` | Raw data in base64 encoded string |
+| Field    | Datatype        | Description                              |
+| -------- | ---------------------------------------------------------- | --------------------------------- |
+| present  | `bool`                                                     | -                                 |
+| data     | [`TableDeltaRowContract`](#tabledeltarowcontract) \| `any` | Decoded data                      |
+| raw_data | `base64_string`                                            | Raw data in base64 encoded string |
+
+### TableDeltaRowContract
+
+These messages are only relevant when listening to [Table deltas](redis-channels#table-delta) channel when name is `contract_row`.
+
+
+
+| Field       | Datatyp                  | Description                                                |
+| ----------- | ------------------------ | ---------------------------------------------------------- |
+| table       | `string`                 | table name                                                 |
+| scope       | `string`                 | table scope                                                |
+| primary_key | `string` \| `int`        | Primary ID for the row.                                    |
+| code        | `string`                 | Account name where that has the contract code              |
+| payer       | `string`                 | Account name that payed for the ram that this row consumes |
+| value       | `map` \| `base64_string` | Actual data in the table                                   |
+
+
+Thalos can decode contract row data in `vaule` using the contracts abi.
+If Thalos could not decode the data then `value` will contain a `base64_string` of the raw value instead.
