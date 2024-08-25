@@ -48,7 +48,7 @@ Heartbeat messages are posted to the heartbeat channel periodically.
 | code_sequence   | int                   | Code sequence      |
 | abi_sequence    | int                   | ABI sequence       |
 
-### PermisssionLevel
+### PermissionLevel
 
 | Field      | Datatype | Description                      |
 | ---------- | -------- | -------------------------------- |
