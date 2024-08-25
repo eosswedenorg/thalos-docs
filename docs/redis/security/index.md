@@ -1,16 +1,23 @@
 
 # Securing redis
 
-This documentation primarily focuses on setups where Redis is exposed to the internet or an internal network where there is not complete control over the clients. For example, you may want to grant access to your Thalos instance to a friend. While trusting your friend is reasonable, it is essential to consider potential future scenarios where trust may no longer exist or their server could be compromised.
+This documentation primarily focuses on setups where Redis is exposed to the internet
+or an internal network where there is not a complete control over the clients.
+For example, you may want to grant access to your Thalos instance to a friend.
+While trusting your friend is reasonable, it is essential to consider potential future scenarios where
+trust may no longer exist or their server could be compromised.
 
-If you intend to run Thalos for internal use only, such as having internal applications that are relying on a blockchain stream, it is perfectly acceptable to skip these steps if you have complete control over all involved servers and do not expose the instance over a public IP.
+If you intend to run Thalos for internal use only, such as having internal applications 
+that are relying on a blockchain stream, it is perfectly acceptable to skip these 
+steps if you have complete control over all involved servers and do not expose the instance over a public IP.
 
 ## Isolating redis
 
 To ensure security, it is highly recommended to run Thalos on a dedicated Redis instance, ideally within a
 container or virtual machine.
-This isolation helps prevent data leaks in case of misconfigured Redis ACLs or unauthorized access to the
-admin password.
+This isolation helps prevent data leaks in case of misconfigured Redis ACLs or unauthorized access due to 
+leaked/guessed admin password.
+
 Additionally, it safeguards against potential misconfigurations, such as other applications mistakenly
 writing sensitive data to Redis channels that can be accessed by Thalos clients.
 
