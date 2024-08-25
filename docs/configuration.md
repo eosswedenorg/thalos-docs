@@ -13,6 +13,9 @@ ship:
   url: "ws://ship.example.com:8080"
 ```
 
+There is also the option to configure Thalos via command line flags.
+See [this](running-the-server#cli-flags) section for more inforation
+
 ### General
 
 `name` ([`string`](#string)) - Name of the talos node.
