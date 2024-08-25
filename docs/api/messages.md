@@ -14,75 +14,75 @@ Heartbeat messages are posted to the heartbeat channel periodically.
 
 | Field                      | Datatype | Description                                 |
 | -------------------------- | -------- | ------------------------------------------- |
-| blocknum                   | int      | Current block number                        |
-| head_blocknum              | int      | Head block number                           |
-| last_irreversible_blocknum | int      | block number of the last irreversible block |
+| blocknum                   | `int`    | Current block number                        |
+| head_blocknum              | `int`    | Head block number                           |
+| last_irreversible_blocknum | `int`    | block number of the last irreversible block |
 
 ### Transaction
 
 
 ### ActionTrace
 
-| Field          | Datatype          | Description                                                       |
-| -------------- | ----------------- | ----------------------------------------------------------------- |
-| tx_id          | string            | Transaction ID                                                    |
-| blocknum       | int               | Block number where this action trace (and transaction) belongs to |
-| blocktimestamp | time              | Block timestamp                                                   |
-| receipt        | ActionReceipt     | Action receipt                                                    |
-| receiver       | string            | Receiver account                                                  |
-| first_receiver | bool              | True if receiver is the first account to get notified             |
-| contract       | string            | Contract account                                                  |
-| action         | string            | What action was executed on the contract                          |
-| data           | any               | Contract specific data (decoded using the contracts abi)          |
-| authorization  | PermissionLevel[] | Authorization                                                     |
+| Field          | Datatype                                | Description                                                       |
+| -------------- | --------------------------------------- | ----------------------------------------------------------------- |
+| tx_id          | `string`                                | Transaction ID                                                    |
+| blocknum       | `int`                                   | Block number where this action trace (and transaction) belongs to |
+| blocktimestamp | `time`                                  | Block timestamp                                                   |
+| receipt        | [`ActionReceipt`](#actionreceipt)       | Action receipt                                                    |
+| receiver       | `string`                                | Receiver account                                                  |
+| first_receiver | `bool`                                  | True if receiver is the first account to get notified             |
+| contract       | `string`                                | Contract account                                                  |
+| action         | `string`                                | What action was executed on the contract                          |
+| data           | `any`                                   | Contract specific data (decoded using the contracts abi)          |
+| authorization  | [`PermissionLevel[]`](#permissionlevel) | Authorization                                                     |
 
 ### ActionReceipt
 
-| Field           | Datatype              | Description        |
-| --------------- | --------------------- | ------------------ |
-| receiver        | string                | Actor account name |
-| act_digest      | string                | Action digest      |
-| global_sequence | int                   | Global sequence    |
-| recv_sequence   | int                   | Receive sequence   |
-| auth_sequence   | AccountAuthSequence[] | Auth sequence      |
-| code_sequence   | int                   | Code sequence      |
-| abi_sequence    | int                   | ABI sequence       |
+| Field           | Datatype                                        | Description        |
+| --------------- | ----------------------------------------------- | ------------------ |
+| receiver        | `string`                                        | Actor account name |
+| act_digest      | `string`                                        | Action digest      |
+| global_sequence | `int`                                           | Global sequence    |
+| recv_sequence   | `int`                                           | Receive sequence   |
+| auth_sequence   | [`AccountAuthSequence[]`](#accountauthsequence) | Auth sequence      |
+| code_sequence   | `int`                                           | Code sequence      |
+| abi_sequence    | `int`                                           | ABI sequence       |
 
 ### PermissionLevel
 
 | Field      | Datatype | Description                      |
 | ---------- | -------- | -------------------------------- |
-| actor      | string   | Actor account name               |
-| permission | string   | Permission (for example: active) |
+| actor      | `string` | Actor account name               |
+| permission | `string` | Permission (for example: active) |
 
 ### AccountAuthSequence
 
 | Field    | Datatype | Description  |
 | -------- | -------- | ------------ |
-| account  | string   | Account name |
-| sequence | int      | Sequence     |
+| account  | `string` | Account name |
+| sequence | `int`    | Sequence     |
 
 ### RollbackMessage
 
 | Field     | Datatype | Description                          |
 | --------- | -------- | ------------------------------------ |
-| new_block | int      | The current block number             |
-| old_block | int      | Last block number that was received. |
+| new_block | `int`    | The current block number             |
+| old_block | `int`    | Last block number that was received. |
 
 ### TableDelta
 
-| Field          | Datatype        | Description       |
-| -------------- | --------------- | ----------------- |
-| blocknum       | int             | Block number      |
-| blocktimestamp | time            | Block timestamp   |
-| name           | string          | Table name        |
-| rows           | TableDeltaRow[] | Rows in the delta |
+| Field          | Datatype                            | Description       |
+| -------------- | ----------------------------------- | ----------------- |
+| blocknum       | `int`                               | Block number      |
+| blocktimestamp | `time`                              | Block timestamp   |
+| name           | `string`                            | Table name        |
+| rows           | [`TableDeltaRow[]`](#tabledeltarow) | Rows in the delta |
 
 
 ### TableDeltaRow
 
-| Field    | Datatype      | Description                       |
-| -------- | ------------- | --------------------------------- |
-| present  | bool          | -                                 |
-| data     | any           | Decoded data                      |
-| raw_data | base64_string | Raw data in base64 encoded string |
+| Field    | Datatype        | Description                       |
+| -------- | --------------- | --------------------------------- |
+| present  | `bool`          | -                                 |
+| data     | `any`           | Decoded data                      |
+| raw_data | `base64_string` | Raw data in base64 encoded string |
