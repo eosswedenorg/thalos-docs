@@ -69,6 +69,28 @@ Thalos will treat `ship.blacklist` as a whitelist.
 
 `redis.prefix` ([`string`](#string)) - Key prefix, this will be prepended to all channels that thalos is using to avoid name collision
 
+### Cache
+
+These settings control the cache used by Thalos to cache abi definitions and internal state.
+
+`cache.storage` ([`string`](#string) default: `redis`) - Cache storage to use.
+
+Avaible values are: `memory`, `redis`
+
+`cache.options` (`map`) - Options for the cache storage, see section for each cache storage.
+
+#### Memory
+
+No configuration.
+
+#### Redis
+
+`cache.options.stats` ([`boolean`](#string) default: `false`) - True if statistics should be collected
+
+`cache.options.size` ([`number`](#string) default: `1000`) - How many items to store in process local memory for faster lookup of popular items
+
+`cache.options.ttl` ([`number`](#string) default: `10`) - How long (in minutes) each item should be kept in process local memory before being discared (and has to be fetched from redis again.)
+
 ### Logging
 
 This block configures how thalos will log information.

@@ -19,7 +19,7 @@ There are several ways to install thalos, via package manager, downloading a pre
 
 You can get the latest archive package [here](https://github.com/eosswedenorg/thalos/releases/latest)
 
-Simply download using your webbrowser or via curl:
+Simply download using your web browser or via curl:
 
 ```shell
 curl -Ls https://github.com/eosswedenorg/thalos/releases/download/<version>/thalos-server-<version>-linux-amd64.tar.gz | tar -z --one-top-level=thalos -xvf -
@@ -31,7 +31,7 @@ Using curl command above, the files are extracted into the `thalos` subdirectory
 
 ### Compiling from source
 
-You will need golang version `1.20` or later to compile the source.
+You will need golang version `1.21` or later to compile the source.
 
 #### Compile using make
 
