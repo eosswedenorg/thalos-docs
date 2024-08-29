@@ -19,7 +19,7 @@ There are several ways to install thalos, via package manager, downloading a pre
 
 You can get the latest archive package [here](https://github.com/eosswedenorg/thalos/releases/latest)
 
-Simply download using your webbrowser or via curl:
+Simply download using your web browser or via curl:
 
 ```shell
 curl -Ls https://github.com/eosswedenorg/thalos/releases/download/<version>/thalos-server-<version>-linux-amd64.tar.gz | tar -z --one-top-level=thalos -xvf -

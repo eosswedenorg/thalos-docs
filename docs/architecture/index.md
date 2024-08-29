@@ -37,7 +37,10 @@ However, these advantages can also be considered drawbacks in certain situations
 
 - **Immediate message consumption**: Pub/Sub requires subscribers to consume messages immediately upon publication. If a client is unable to read a message promptly, it is discarded.
 
-In contrast, Streams in Redis provide built-in message persistence. Messages are stored as entries in the stream and can be consumed at any time, even if they were published before the subscriber connected.
+In contrast, Streams in Redis provide built-in message persistence.
+Messages are stored as entries in the stream and can be consumed at any time, even if they were published before the subscriber connected.
 This feature addresses the drawbacks of immediate message consumption and message loss associated with Pub/Sub.
 
-Currently, Streams are not implemented in Thalos. However, there are plans to consider implementing Streams in the future, based on the demand for such functionality. It's important to note that Streams introduce additional complexity to the client implementation.
+Currently, Streams are not implemented in Thalos.
+However, there are plans to consider implementing Streams in the future, based on the demand for such functionality.
+It's important to note that Streams introduce additional complexity to the client implementation.

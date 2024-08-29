@@ -31,7 +31,7 @@ Consequently, it is important to consider that the performance on these hardware
 ![Live Data msg per sec](./live.png)
 
 ::: details
-\* Redis discards messages for clients because they cannot be processed in time. resulting in dataloss.
+\* Redis discards messages for clients because they cannot be processed in time. Resulting in data loss.
 :::
 
 
@@ -43,7 +43,8 @@ Raw data:
 
 These results are quite interesting. High and mid-end hardware are about equal even for 100 clients. And the low-end hardware is not so far of. capable of handling atleast 10 clients.
 
-Note that one block contains alot of transactions and actions resulting in alot more then one redis message per block. therefore even if there is just 2 blocks per second. There is alot more redis messages sent out.
+Note that one block contains a lot of transactions and actions resulting in a lot more then one Redis message per block.
+Therefore even if there is just 2 blocks per second. There is a lot more Redis messages sent out.
 
 ## Replay
 
@@ -66,6 +67,9 @@ it is just as 10xlow, not usable.
 ## Conclusion
 
 By looking at the live data graphs they process roughly the same amount of messages per second. That is because the bottleneck is the blockchain
-itself. If we look at the replay data, redis clients can't keep up as number of clients increases. however, it is still pretty fast. consider that all 10x clients performs roughly equal.
+itself. If we look at the replay data, redis clients can't keep up as number of clients increases.
+However, it is still pretty fast. Consider that all 10x clients performs roughly equal.
 
-Also the fact that the benchmark tests fetchees **all** messages. That is pretty unrealistic as applications should in 99% of the cases only care about actions on a subset of contracts. Only case where you would want all actions is if you are building some sort of blockexplorer.
+Also the fact that the benchmark tests fetches **all** messages. That is pretty unrealistic as applications
+should in 99% of the cases only care about actions on a subset of contracts.
+Only case where you would want all actions is if you are building some sort of blockexplorer.

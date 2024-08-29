@@ -12,7 +12,8 @@ The special account called `default` serves as the default account for unauthori
 configured with a password. Connections can authenticate against this account without specifying a username.
 Thalos utilizes this account as the default user account.
 
-Additionally, it is advisable to restrict the Thalos server account as an added precaution against any unauthorized actions it may inadvertently perform, although such occurrences are highly unlikely.
+Additionally, it is advisable to restrict the Thalos server account as an added precaution against any
+unauthorized actions it may inadvertently perform, although such occurrences are highly unlikely.
 
 The ACL in thalos is simple and uses 2 accounts:
 
