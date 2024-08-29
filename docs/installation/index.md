@@ -31,7 +31,7 @@ Using curl command above, the files are extracted into the `thalos` subdirectory
 
 ### Compiling from source
 
-You will need golang version `1.20` or later to compile the source.
+You will need golang version `1.21` or later to compile the source.
 
 #### Compile using make
 
