@@ -184,6 +184,8 @@ Keys (contracts) are of type [`string`](#string) and values are an array of [`st
 
 Action array can hold a special string `*` that matches any action.
 
+The special contract `"*"` matches all contracts. 
+
 **example**:
 
 ```yaml
@@ -195,4 +197,7 @@ mycontract:
 
 # To target all actions on a contract:
 mycontract: [ "*" ]
+
+# Matches the transfer and refund actions for all contracts
+"*": [ transfer, refund ]
 ```
