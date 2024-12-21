@@ -41,6 +41,10 @@ to run
 If `true`, the ship node will only send transactions once they are considered irreversible.
 If `false` the transactions are posted as soon as possible.
 
+`ship.table_deltas` ([`boolean`](#boolean))
+
+If set to `true` thalos will publish table deltas updates to clients.
+
 `ship.start_block_num` ([`integer`](#integer))
 
 Thalos will start streaming blocks starting from this one. if undefined, the currect block reported by `api` is used.
