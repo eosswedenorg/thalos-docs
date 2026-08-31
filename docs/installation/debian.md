@@ -10,7 +10,7 @@ The following documentation assumes that you have already set up a `redis` serve
 
 ## 1. Installing the package
 
-### Using Sw/edens apt repository
+### Using EOSSweden apt repository
 
 First, obtain the key.
 
@@ -52,4 +52,4 @@ See [Configuration](/docs/configuration) for more information
 
 ## 3. Starting the Server
 
-There are serveral ways to run the server. the most common on debian is via [systemd](/docs/running-the-server#with-systemd) or [manually](/docs/running-the-server#with-systemd)
+There are several ways to run the server. The most common on Debian is via [systemd](/docs/running-the-server#with-systemd) or [manually](/docs/running-the-server#starting-manually).

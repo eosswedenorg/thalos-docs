@@ -7,7 +7,7 @@ next:
 
 # Installation
 
-There are several ways to install thalos, via package manager, downloading a pre-built binary or building directly from source.
+There are several ways to install Thalos: package manager, pre-built binaries, or building from source.
 
 ## Package Managers
 
@@ -31,7 +31,7 @@ Using curl command above, the files are extracted into the `thalos` subdirectory
 
 ### Compiling from source
 
-You will need golang version `1.26` or later to compile the source.
+You will need Go `1.26` or later to compile the source.
 
 #### Compile using make
 
@@ -39,10 +39,10 @@ You will need golang version `1.26` or later to compile the source.
 make
 ```
 
-or using go directly if you dont have make installed.
+Or using `go` directly if you don't have `make` installed:
 
 ```shell
-go build -o build/thalos-server cmd/thalos/main.go
+go build -o build/thalos-server ./cmd/thalos/
 ```
 
 #### Install

@@ -1,51 +1,49 @@
+# Securing Redis
 
-# Securing redis
+This guide focuses on Redis deployments where other systems or users can connect
+to the same Redis server as Thalos.
 
-This documentation primarily focuses on setups where Redis is exposed to the internet or an internal
-network where there is not complete control over the clients.
-For example, you may want to grant access to your Thalos instance to a friend.
-While trusting your friend is reasonable, it is essential to consider potential future scenarios where
-trust may no longer exist or their server could be compromised.
+## Baseline recommendations
 
-If you intend to run Thalos for internal use only, such as having internal applications that are relying on a blockchain stream,
-it is perfectly acceptable to skip these steps if you have complete control over all involved
-servers and do not expose the instance over a public IP.
+1. Do not expose Redis directly to the public internet.
+2. Restrict network access (bind + firewall/security groups).
+3. Use ACL users with least privilege (see [ACL](/docs/redis/security/acl)).
+4. Use TLS when traffic crosses untrusted networks.
 
-## Isolating redis
+## Isolating Redis
 
-To ensure security, it is highly recommended to run Thalos on a dedicated Redis instance, ideally within a
-container or virtual machine.
-This isolation helps prevent data leaks in case of misconfigured Redis ACLs or unauthorized access due to 
-leaked/guessed admin password.
+Running Thalos on a dedicated Redis instance (or dedicated DB/service) reduces
+blast radius if credentials leak or ACL rules are misconfigured.
 
-Additionally, it safeguards against potential misconfigurations, such as other applications mistakenly
-writing sensitive data to Redis channels that can be accessed by Thalos clients.
+It also lowers the risk of other applications accidentally publishing sensitive
+data to channels your subscribers can read.
 
-In summary, isolating Thalos in its own Redis instance provides an extra layer of safety.
+## Network and protected mode
 
-## Network
+Use `bind` in `redis.conf` to restrict interfaces:
 
-The `bind` directive in `redis.conf` is used to tell redis what network interfaces it should bind to.
-Make sure to update this with the interfaces you intend to use.
+```conf
+bind 127.0.0.1 ::1              # loopback only
+bind 192.168.1.100 10.0.0.1     # specific interfaces
+```
 
-::: danger IMPORTANT
-Although it is recommended to limit Redis to the localhost interface for security purposes, with proper
-firewall and ACL configurations, it can be safely exposed to additional interfaces. Carefully evaluate the necessity of
-external access before making the change in the config file.
+::: warning
+`protected-mode` is a safety fallback, not a full security model.
+For production, still enforce strict network controls and ACLs.
 :::
-
-```
-bind 192.168.1.100 10.0.0.1     # listens on two specific IPv4 addresses
-bind 127.0.0.1 ::1              # listens on loopback IPv4 and IPv6
-bind * -::*                     # like the default, all available interfaces
-```
 
 ## Firewall
 
-Make sure you setup your firewall rules correctly. Only allowing the IP addresses you trust to access the Redis port.
-This is out of scope of this documentation. Consult your operating system or router manuals.
+Allow Redis port access only from trusted hosts/subnets.
+Firewall setup is environment-specific, so refer to your platform docs.
+
+## TLS
+
+Redis supports native TLS (Redis 6+).
+When using TLS-only deployments, disable plaintext (`port 0`) and use `tls-port`.
 
 ## Useful links
 
-* [Official Security Documentation](https://redis.io/docs/management/security)
-* [Config File Example](https://redis.io/docs/management/config-file)
+- [Redis security overview](https://redis.io/docs/latest/operate/oss_and_stack/management/security/)
+- [Redis ACL documentation](https://redis.io/docs/latest/operate/oss_and_stack/management/security/acl/)
+- [Redis TLS documentation](https://redis.io/docs/latest/operate/oss_and_stack/management/security/encryption/)

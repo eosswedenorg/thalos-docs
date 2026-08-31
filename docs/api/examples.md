@@ -1,3 +1,7 @@
+# Examples
+
+These examples assume Thalos uses `message_codec: json` (default).
+If you run with `message_codec: msgpack`, use a MessagePack decoder in your client.
 
 ## Go
 
@@ -18,15 +22,15 @@ import (
 )
 
 func main() {
-	// Create redis client
+	// Create Redis client
 	rdb := redis.NewClient(&redis.Options{})
 
 	sub := api_redis.NewSubscriber(context.Background(), rdb, api_redis.Namespace{
 		Prefix:  "ship",
-		ChainID: "1064487b3cd1a897ce03ae5b6a865651747e2e152090f99c1d19d44e01aea5a4", // Wax mainnet.
+		ChainID: "1064487b3cd1a897ce03ae5b6a865651747e2e152090f99c1d19d44e01aea5a4", // WAX mainnet
 	})
 
-    // Create client
+	// Create client
 	codec, err := message.GetCodec("json")
 	if err != nil {
 		fmt.Println("Failed to get json codec")
@@ -35,7 +39,7 @@ func main() {
 
 	client := api.NewClient(sub, codec.Decoder)
 
-    // Subscribe to some channels.
+	// Subscribe to some channels.
 	err = client.Subscribe(
 		api.TransactionChannel,
 		api.ActionChannel{Contract: "eosio"}.Channel(),
@@ -49,18 +53,18 @@ func main() {
 		return
 	}
 
-    // Wait for interrupt in a go routine and close the client.
+	// Wait for interrupt and close the client.
 	go func() {
-		sig := make(chan os.Signal)
+		sig := make(chan os.Signal, 1)
 		signal.Notify(sig, os.Interrupt)
 
 		<-sig
 		fmt.Println("Got interrupt")
 
-		client.Close()
+		_ = client.Close()
 	}()
 
-    // Read messages
+	// Read messages
 	for t := range client.Channel() {
 		switch msg := t.(type) {
 		case error:
@@ -69,7 +73,10 @@ func main() {
 			fmt.Println("Transaction", msg.BlockNum, msg.ID)
 			fmt.Println(msg)
 			fmt.Println("---")
-		case message.HeartBeat :
+		case message.ActionTrace:
+			fmt.Println("Action", msg.Contract, msg.Name)
+			fmt.Println("---")
+		case message.HeartBeat:
 			fmt.Println("Heartbeat")
 			fmt.Println(msg)
 			fmt.Println("---")
@@ -78,9 +85,9 @@ func main() {
 }
 ```
 
-## Nodejs
+## Node.js
 
-install the thalos client library:
+Install the thalos client library:
 
 `npm install --save @eosswedenorg/thalos-client`
 
@@ -129,9 +136,9 @@ Transfer From/To: ponyslaystat -> wombatmaster Assets: [ '1099880264627' ]
 
 ## Python
 
-This example will listen for new atomicasset transfers and print them to standard output.
+This example listens for new `atomicassets::logtransfer` actions and prints them to standard output.
 You can specify multiple channels to listen to by adding them to the `redis_channels` list.
-Before you start this script, make sure you have the redis-server running.
+Before you start this script, make sure Redis is running.
 
 ::: info NOTE
 You need to have the redis-py library installed for this to work

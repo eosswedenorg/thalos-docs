@@ -1,107 +1,137 @@
 # Messages
 
-This document describes the different messages that are sent
+This document describes the message payloads published by Thalos.
 
 ## Encoding
 
-All messages are encoded in `json` format
+Thalos supports two codecs (configured via `message_codec` / `--codec`):
 
-## Types
+- `json` (default)
+- `msgpack`
+
+When using JSON:
+
+- `[]byte` fields are base64-encoded strings
+- timestamps are UTC and serialized by the JSON codec
+
+## Message types
 
 ### HeartBeat
 
-Heartbeat messages are posted to the heartbeat channel periodically.
+Published on `heartbeat` channel periodically.
 
-| Field                      | Datatype | Description                                 |
+| Field                      | Type     | Description                                 |
 | -------------------------- | -------- | ------------------------------------------- |
-| blocknum                   | `int`    | Current block number                        |
-| head_blocknum              | `int`    | Head block number                           |
-| last_irreversible_blocknum | `int`    | block number of the last irreversible block |
+| `blocknum`                 | `uint32` | Current block number                        |
+| `head_blocknum`            | `uint32` | Current chain head block number             |
+| `last_irreversible_blocknum` | `uint32` | Last irreversible block number              |
 
-### Transaction
+### TransactionTrace
 
+Published on `transactions` channel (unless disabled).
+
+| Field            | Type                              | Description |
+| ---------------- | --------------------------------- | ----------- |
+| `id`             | `string`                          | Transaction id |
+| `blocknum`       | `uint32`                          | Block number |
+| `blocktimestamp` | `time`                            | Block timestamp |
+| `status`         | `string`                          | Transaction status |
+| `cpu_usage_us`   | `uint32`                          | CPU usage (microseconds) |
+| `net_usage_words` | `uint32`                         | NET usage words |
+| `elapsed`        | `int64`                           | Execution time |
+| `net_usage`      | `uint64`                          | NET usage |
+| `scheduled`      | `bool`                            | Scheduled transaction flag |
+| `action_traces`  | [`ActionTrace[]`](#actiontrace)   | Action traces for this transaction |
+| `except`         | `string`                          | Exception text (if any) |
+| `error`          | `uint64`                          | Error code |
 
 ### ActionTrace
 
-| Field          | Datatype                                | Description                                                       |
-| -------------- | --------------------------------------- | ----------------------------------------------------------------- |
-| tx_id          | `string`                                | Transaction ID                                                    |
-| blocknum       | `int`                                   | Block number where this action trace (and transaction) belongs to |
-| blocktimestamp | `time`                                  | Block timestamp                                                   |
-| receipt        | [`ActionReceipt`](#actionreceipt)       | Action receipt                                                    |
-| receiver       | `string`                                | Receiver account                                                  |
-| first_receiver | `bool`                                  | True if receiver is the first account to get notified             |
-| contract       | `string`                                | Contract account                                                  |
-| action         | `string`                                | What action was executed on the contract                          |
-| data           | `any`                                   | Contract specific data (decoded using the contracts abi)          |
-| authorization  | [`PermissionLevel[]`](#permissionlevel) | Authorization                                                     |
+Published on `actions` channels (unless disabled), and also nested in `TransactionTrace.action_traces`.
+
+| Field            | Type                                       | Description |
+| ---------------- | ------------------------------------------ | ----------- |
+| `tx_id`          | `string`                                   | Parent transaction id |
+| `blocknum`       | `uint32`                                   | Block number |
+| `blocktimestamp` | `time`                                     | Block timestamp |
+| `receipt`        | [`ActionReceipt`](#actionreceipt) / `null` | Action receipt |
+| `name`           | `string`                                   | Action name |
+| `contract`       | `string`                                   | Contract account |
+| `receiver`       | `string`                                   | Receiver account |
+| `first_receiver` | `bool`                                     | True if receiver is first receiver |
+| `data`           | `any`                                      | ABI-decoded action data when available |
+| `authorization`  | [`PermissionLevel[]`](#permissionlevel)    | Authorization list |
+| `except`         | `string`                                   | Exception text (if any) |
+| `error`          | `uint64`                                   | Error code |
+| `return`         | `bytes`                                    | Return value bytes |
+
+> Note: the field is `name` (not `action`).
 
 ### ActionReceipt
 
-| Field           | Datatype                                        | Description        |
-| --------------- | ----------------------------------------------- | ------------------ |
-| receiver        | `string`                                        | Actor account name |
-| act_digest      | `string`                                        | Action digest      |
-| global_sequence | `int`                                           | Global sequence    |
-| recv_sequence   | `int`                                           | Receive sequence   |
-| auth_sequence   | [`AccountAuthSequence[]`](#accountauthsequence) | Auth sequence      |
-| code_sequence   | `int`                                           | Code sequence      |
-| abi_sequence    | `int`                                           | ABI sequence       |
+| Field             | Type                                              | Description |
+| ----------------- | ------------------------------------------------- | ----------- |
+| `receiver`        | `string`                                          | Receiver account |
+| `act_digest`      | `string`                                          | Action digest |
+| `global_sequence` | `uint64`                                          | Global sequence |
+| `recv_sequence`   | `uint64`                                          | Receiver sequence |
+| `auth_sequence`   | [`AccountAuthSequence[]`](#accountauthsequence)   | Auth sequence list |
+| `code_sequence`   | `uint32`                                          | Code sequence |
+| `abi_sequence`    | `uint32`                                          | ABI sequence |
 
 ### PermissionLevel
 
-| Field      | Datatype | Description                      |
-| ---------- | -------- | -------------------------------- |
-| actor      | `string` | Actor account name               |
-| permission | `string` | Permission (for example: active) |
+| Field        | Type     | Description |
+| ------------ | -------- | ----------- |
+| `actor`      | `string` | Actor account |
+| `permission` | `string` | Permission name |
 
 ### AccountAuthSequence
 
-| Field    | Datatype | Description  |
-| -------- | -------- | ------------ |
-| account  | `string` | Account name |
-| sequence | `int`    | Sequence     |
+| Field      | Type     | Description |
+| ---------- | -------- | ----------- |
+| `account`  | `string` | Account name |
+| `sequence` | `uint64` | Sequence |
 
 ### RollbackMessage
 
-| Field     | Datatype | Description                          |
-| --------- | -------- | ------------------------------------ |
-| new_block | `int`    | The current block number             |
-| old_block | `int`    | Last block number that was received. |
+Published on `rollback` channel on microfork rollback detection.
+
+| Field       | Type     | Description |
+| ----------- | -------- | ----------- |
+| `old_block` | `uint32` | Previous current block |
+| `new_block` | `uint32` | New current block |
 
 ### TableDelta
 
-| Field          | Datatype                            | Description       |
-| -------------- | ----------------------------------- | ----------------- |
-| blocknum       | `int`                               | Block number      |
-| blocktimestamp | `time`                              | Block timestamp   |
-| name           | `string`                            | Table name        |
-| rows           | [`TableDeltaRow[]`](#tabledeltarow) | Rows in the delta |
+Published on `tabledeltas` channels (unless disabled).
 
+| Field            | Type                                | Description |
+| ---------------- | ----------------------------------- | ----------- |
+| `blocknum`       | `uint32`                            | Block number |
+| `blocktimestamp` | `time`                              | Block timestamp |
+| `name`           | `string`                            | SHIP delta name |
+| `rows`           | [`TableDeltaRow[]`](#tabledeltarow) | Rows in the delta |
 
 ### TableDeltaRow
 
-| Field    | Datatype        | Description                              |
-| -------- | ---------------------------------------------------------- | --------------------------------- |
-| present  | `bool`                                                     | -                                 |
-| data     | [`TableDeltaRowContract`](#tabledeltarowcontract) \| `any` | Decoded data                      |
-| raw_data | `base64_string`                                            | Raw data in base64 encoded string |
+| Field      | Type      | Description |
+| ---------- | --------- | ----------- |
+| `present`  | `bool`    | Row present/removed flag |
+| `data`     | `object`  | Parsed row data when available |
+| `raw_data` | `bytes`   | Raw row bytes |
 
-### TableDeltaRowContract
+### TableDeltaRowContract (`name = contract_row`)
 
-These messages are only relevant when listening to [Table deltas](redis-channels#table-delta) channel when name is `contract_row`.
+For `contract_row` deltas, `data` typically contains:
 
+| Field         | Type                     | Description |
+| ------------- | ------------------------ | ----------- |
+| `table`       | `string`                 | Table name |
+| `scope`       | `string`                 | Table scope |
+| `primary_key` | `string \| int`          | Primary key |
+| `code`        | `string`                 | Contract account |
+| `payer`       | `string`                 | RAM payer |
+| `value`       | `object \| base64_string` | Decoded row value when ABI is available; otherwise raw bytes |
 
-
-| Field       | Datatyp                  | Description                                                |
-| ----------- | ------------------------ | ---------------------------------------------------------- |
-| table       | `string`                 | table name                                                 |
-| scope       | `string`                 | table scope                                                |
-| primary_key | `string` \| `int`        | Primary ID for the row.                                    |
-| code        | `string`                 | Account name where that has the contract code              |
-| payer       | `string`                 | Account name that payed for the ram that this row consumes |
-| value       | `map` \| `base64_string` | Actual data in the table                                   |
-
-
-Thalos can decode contract row data in `vaule` using the contracts abi.
-If Thalos could not decode the data then `value` will contain a `base64_string` of the raw value instead.
+If ABI decode fails, Thalos keeps raw data and may leave decoded fields partial.

@@ -1,65 +1,73 @@
 # Redis channels
 
-This document describes the redis channels used by thalos to deliver messages.
+This document describes the Redis Pub/Sub channels used by Thalos.
 
-## Namespace
+## Channel key format
 
-First. all channels have a namespace attached to them. this is done to prevent other application to clash with the keys.
+All published channels are namespaced to avoid collisions:
 
-The namespace have the following format: `<prefix>::<chain_id>`
+`<prefix>::<chain_id>::<channel-path>`
 
-* `prefix` is per default `ship` but can be configured to be something else.
-* `chain_id` is the chain's id and is used to separate transactions if multiple chains are setup in the same redis database.
+- `prefix`: defaults to `ship` (config: `redis.prefix`)
+- `chain_id`: chain id from API by default, or overridden with `ship.chain`
+- `channel-path`: one of the paths below
 
-## Transactions
+If no chain id is available, Thalos uses an all-zero fallback chain id internally.
 
-All transactions are posted to the following channel:
+## Channel paths
+
+### Heartbeat
+
+`<namespace>::heartbeat`
+
+Published periodically (every 10 blocks) so subscribers can detect liveness.
+
+### Transactions
 
 `<namespace>::transactions`
 
-## Actions
+Contains `TransactionTrace` messages.
 
-there is 4 types of channels for actions.
+### Actions
 
-The channel where all actions are posted is:
+Thalos publishes each action trace to up to 4 channels:
 
-`<namespace>::actions`
+- All actions:
 
-Channel where only specific actions are posted:
+  `<namespace>::actions`
 
-`<namespace>::actions/name/<action>`
+- By action name:
 
-Channel where only actions on a specific `<contract>` is posted:
+  `<namespace>::actions/name/<action>`
 
-`<namespace>::actions/contract/<contract>`
+- By contract:
 
-Channel where only `<action>` on a specific `<contract>` is posted:
+  `<namespace>::actions/contract/<contract>`
 
-`<namespace>::actions/contract/<contract>/name/<action>`
+- By contract + action:
 
-## Rollback
+  `<namespace>::actions/contract/<contract>/name/<action>`
 
-Rollback mesages are posted to this channel.
+### Rollback
 
 `<namespace>::rollback`
 
-## Table delta
+Contains `RollbackMessage` messages when microfork rollbacks are detected.
 
-Table deltas are posted to the following channels
+### Table deltas
 
-All deltas:
+- All table deltas:
 
-`<namespace>::tabledeltas`
+  `<namespace>::tabledeltas`
 
-Only deltas for a specific type.
+- Table deltas by SHIP delta name:
 
-`<namespace>::tabledeltas/name/<name>`
+  `<namespace>::tabledeltas/name/<name>`
 
-`<name>` can be one of
+`<name>` is the table delta name received from SHIP (for example `contract_row`,
+`contract_table`, `resource_usage`, `resource_limits_state`).
 
-* `account_metadata`
-* `contract_table`
-* `contract_row`
-* `contract_index64`
-* `resource_usage`
-* `resource_limits_state`
+## Notes
+
+- `transactions`, `actions`, and `tabledeltas` output can be enabled/disabled via config/flags.
+- If `ship.table_delta_whitelist` is configured, only matching `contract_row` deltas are published.

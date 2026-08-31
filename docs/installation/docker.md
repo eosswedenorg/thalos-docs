@@ -4,7 +4,7 @@
 
 # Docker
 
-Do you want to run Thalos in a container? No problem as Thalos provides official docker images
+Do you want to run Thalos in a container? No problem as Thalos provides official Docker images
 to get you going in no time.
 
 The images can be found [here](https://github.com/eosswedenorg/thalos/pkgs/container/thalos)
@@ -19,12 +19,12 @@ Check that it works by spawning the container and display the version:
 
 ```sh
 $ docker run ghcr.io/eosswedenorg/thalos:latest --version
-thalos-server v1.1.1
+thalos-server v<version>
 ```
 
-## Using docker compose
+## Using Docker Compose
 
-Use `docker-compose` to spin up a SHIP node, Redis and Thalos all at once.
+Use Docker Compose to spin up a SHIP node, Redis, and Thalos all at once.
 
 ```yaml
 services:
@@ -33,11 +33,11 @@ services:
     depends_on:
       - redis
       - ship
-    # pass arguments to thalos.
+    # Pass arguments to thalos-server.
     command: [
       "--redis-addr=redis:6379",
-      "--url=http://ship:80",
-      "--ship-url=http://ship:8080"
+      "--url=http://ship:8888",
+      "--ship-url=ws://ship:8080"
     ]
     # or mount a config file
     #volumes:

@@ -1,61 +1,92 @@
 # Configuration
 
-The configuration file is located at `config.yml` in the installed directory and contains 
-an example configuration with extensive documentation. 
-Below are the essential fields that you need to modify. 
-You can adjust the settings according to your preferences.
+The default configuration file is `./config.yml`.
+
+- For bundled/manual installs this is typically in your install directory.
+- For Debian packages this is usually `/etc/thalos/config.yml`.
+
+CLI flags override configuration values when provided.
 
 ```yaml
-name: MyShipReader
-api: "http://api.example.com:8888"
+name: "my-thalos-node"
+api: "http://127.0.0.1:8888"
+message_codec: "json"
 
 ship:
-  url: "ws://ship.example.com:8080"
+  url: "ws://127.0.0.1:8080"
+
+redis:
+  addr: "127.0.0.1:6379"
 ```
 
 There is also the option to configure Thalos via command line flags.
-See [this](running-the-server#cli-flags) section for more inforation
+See [CLI Flags](/docs/running-the-server#cli-flags).
 
 ### General
 
-`name` ([`string`](#string)) - Name of the talos node.
+`name` ([`string`](#string)) - Name of the Thalos node.
 
 `api` ([`string`](#string)) - Nodeos API Endpoint.
 
 `message_codec` ([`string`](#string)) default: `json`
 
-What codec thalos should use when pushing out messages to redis.
+What codec Thalos should use when publishing messages to Redis.
+
+### ABI Cache
+
+`abi_cache.api_timeout` ([`duration_string`](#duration-string)) default: `1s`
+
+Timeout used when fetching ABI definitions from the API.
 
 ### Ship
 
-`ship.url` ([`string`](#string)) - Url to the nodeos node.
+`ship.url` ([`string`](#string)) - URL to the nodeos SHIP endpoint.
 
 `ship.chain` ([`string`](#string))
 
-name of the chain, if not defined thalos will use the chain id reported from `api`.
-This value (or chain_id if undefined) is prepended to channel names, to allow for multiple thalos instances
-to run
+Name of the chain namespace. If not defined, Thalos uses the chain id reported by `api`.
+This value (or the chain id) is prepended to channel names to allow multiple Thalos instances
+to run against the same Redis database.
 
 `ship.irreversible_only` ([`boolean`](#boolean))
 
 If `true`, the ship node will only send transactions once they are considered irreversible.
 If `false` the transactions are posted as soon as possible.
 
+`ship.max_messages_in_flight` ([`integer`](#integer)) default: `10`
+
+Maximum number of SHIP messages in flight before acknowledgement.
+
 `ship.table_deltas` ([`boolean`](#boolean))
 
-If set to `true` thalos will publish table deltas updates to clients.
+If set to `true`, Thalos publishes table delta updates to clients.
+
+`ship.table_delta_whitelist` ([`ContractList`](#contractlist))
+
+Optional whitelist for table deltas (`contract:table`).
+Use `*` as wildcard for table names.
+
+`ship.transactions` ([`boolean`](#boolean)) default: `true`
+
+If `false`, Thalos skips transaction trace messages.
+
+`ship.actions` ([`boolean`](#boolean)) default: `true`
+
+If `false`, Thalos skips action trace messages.
 
 `ship.start_block_num` ([`integer`](#integer))
 
-Thalos will start streaming blocks starting from this one. if undefined, the currect block reported by `api` is used.
+Thalos will start streaming blocks starting from this one.
+If undefined, Thalos will use cached state when available, otherwise API head/LIB depending on mode.
 
 `ship.end_block_num` ([`integer`](#integer))
 
-Thalos will stop streaming when the block number defined by this value will be reached. if undefined thalos will never stop.
+Thalos will stop streaming when this block number is reached.
+If undefined, Thalos will keep streaming.
 
 `ship.blacklist` ([`ContractList`](#contractlist))
 
-List of contract,actions pairs that Thalos will not process if encountered.
+List of `contract:action` pairs that Thalos will skip.
 
 `ship.blacklist_is_whitelist` ([`boolean`](#boolean))
 
@@ -71,7 +102,7 @@ Thalos will treat `ship.blacklist` as a whitelist.
 
 `redis.db` ([`integer`](#integer)) - Database index to use
 
-`redis.prefix` ([`string`](#string)) - Key prefix, this will be prepended to all channels that thalos is using to avoid name collision
+`redis.prefix` ([`string`](#string)) - Key prefix prepended to all Thalos channels to avoid name collisions.
 
 ### Cache
 
@@ -79,7 +110,7 @@ These settings control the cache used by Thalos to cache abi definitions and int
 
 `cache.storage` ([`string`](#string) default: `redis`) - Cache storage to use.
 
-Avaible values are: `memory`, `redis`
+Available values: `memory`, `redis`
 
 `cache.options` (`map`) - Options for the cache storage, see section for each cache storage.
 
@@ -89,31 +120,31 @@ No configuration.
 
 #### Redis
 
-`cache.options.stats` ([`boolean`](#string) default: `false`) - True if statistics should be collected
+`cache.options.stats` ([`boolean`](#boolean) default: `false`) - True if statistics should be collected
 
-`cache.options.size` ([`number`](#string) default: `1000`) - How many items to store in process local memory for faster lookup of popular items
+`cache.options.size` ([`integer`](#integer) default: `1000`) - How many items to store in process local memory for faster lookup of popular items
 
-`cache.options.ttl` ([`number`](#string) default: `10`) - How long (in minutes) each item should be kept in process local memory before being discared (and has to be fetched from redis again.)
+`cache.options.ttl` ([`integer`](#integer) default: `10`) - How long (in minutes) each item should be kept in process local memory before being discarded (and has to be fetched from redis again.)
 
 ### Logging
 
-This block configures how thalos will log information.
+This block configures how Thalos logs information.
 
 `log.filename` ([`string`](#string)) - Filename (without extension)
 
 `log.directory` ([`string`](#string)) - Directory where to store log files.
 
-`log.timeformat` ([`dateformat`](#dateformat)) - Format to rename log files when rotating
+`log.file_timestamp_format` ([`dateformat`](#dateformat)) - Format to rename log files when rotating
 
-`log.max_filesize` ([`integer`](#integer)) - Rotate when the file reaches this size.
+`log.maxfilesize` ([`string`](#string)) - Rotate when the file reaches this size (for example `10mb`, `200mb`).
 
-`log.max_time` ([`duration_string`](#duration-string)) - Rotate when the file is this old.
+`log.maxtime` ([`duration_string`](#duration-string)) - Rotate when the file is this old.
 
 ### Telegram notifications
 
-These settings control the telegram notification mechanism built into thalos.
-if undefined thalos will simple skip this.
-If they are defined, thalos will send messages when important events happen.
+These settings control the Telegram notification mechanism built into Thalos.
+If undefined, Thalos skips Telegram notifications.
+If defined, Thalos sends messages when important events happen.
 
 `telegram.id` ([`string`](#string)) - bot id
 
@@ -136,10 +167,11 @@ Boolean value (`true` or `false`)
 
 ### dateformat
 
-The dateformat type is a `string` but describes a date format in go.
+The dateformat type is a `string` but describes a date format in Go.
 
-Go uses a different approach then other languages. usually you can format a date like `2023-03-22` like
-`YYYY-MM-DD`. Go however uses a **reference time** when parsing time. that is just a single point in time.
+Go uses a different approach than many other languages.
+Usually you might format a date like `2023-03-22` as `YYYY-MM-DD`.
+Go uses a **reference time** when parsing time:
 
     Mon Jan 2 15:04:05 MST 2006
 
@@ -151,7 +183,7 @@ Go uses a different approach then other languages. usually you can format a date
 | `Jan`        | Three letter word of month                  | Oct, Jun         |
 | `January`    | Full name of month                          | April, September |
 | `2`          | Day in month without leading zero           | 1 to 31          |
-| `02`,`_2`    | Day in moth with leading zero               | 01 to 31         |
+| `02`,`_2`    | Day in month with leading zero              | 01 to 31         |
 | `002`,`__2`  | Day in year                                 | 002              |
 | `Mon`        | Three letter word for day in week           | Tue, Fri         |
 | `Monday`     | Full name of day in week                    | Friday, Saturday |
@@ -178,9 +210,12 @@ Valid time units are `"ns"`, `"us"` (or `"µs"`), `"ms"`, `"s"`, `"m"`, `"h"`.
 
 ### ContractList
 
-A array of contract and actions pairs.
+An array/map of `contract:value` pairs.
 
-Keys (contracts) are of type [`string`](#string) and values are an array of [`string`](#string) (one or more actions).
+Keys (contracts) are of type [`string`](#string) and values are an array of [`string`](#string).
+
+For `ship.blacklist` the values are action names.
+For `ship.table_delta_whitelist` the values are table names.
 
 Action array can hold a special string `*` that matches any action.
 
